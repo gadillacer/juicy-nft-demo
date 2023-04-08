@@ -1,0 +1,131 @@
+import React, { useCallback, useEffect, useState } from "react";
+import { ethers } from "ethers";
+import { makeStyles } from "@mui/styles";
+
+import Button from "../Button";
+import { useWeb3AuthContext } from "../../contexts/SocialLoginContext";
+import { useSmartAccountContext } from "../../contexts/SmartAccountContext";
+import {
+  configInfo as config,
+  showErrorMessage,
+  showSuccessMessage,
+} from "../../utils";
+
+const MintNft: React.FC = () => {
+  const classes = useStyles();
+  const { web3Provider, address: eoaAddress } = useWeb3AuthContext();
+  const { state: walletState, wallet } = useSmartAccountContext();
+  const [nftCount, setNftCount] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const getNftCount = useCallback(async () => {
+    if (!walletState?.address || !web3Provider) return;
+    const nftContract = new ethers.Contract(
+      config.nft.address,
+      config.nft.abi,
+      web3Provider
+    );
+    const count = await nftContract.balanceOf(walletState?.address);
+    console.log("count", Number(count));
+    setNftCount(Number(count));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getNftCount();
+  }, [getNftCount, walletState]);
+
+  const mintNft = async (shouldMintToEOA: boolean) => {
+    if (!wallet || !walletState || !web3Provider) return;
+    try {
+      setLoading(true);
+      let smartAccount = wallet;
+      const nftContract = new ethers.Contract(
+        config.nft.address,
+        config.nft.abi,
+        web3Provider
+      );
+      console.log("smartAccount.address ", smartAccount.address);
+      const address = shouldMintToEOA ? eoaAddress : smartAccount.address;
+      const safeMintTx = await nftContract.populateTransaction.mint(
+        address,
+        1
+      );
+      console.log(safeMintTx.data);
+      const tx1 = {
+        to: config.nft.address,
+        data: safeMintTx.data,
+      };
+
+      const txResponse = await smartAccount.sendGaslessTransaction({
+        transaction: tx1,
+      });
+      console.log("Tx sent, userOpHash:", txResponse);
+      console.log("Waiting for tx to be mined...");
+      const txHash = await txResponse.wait();
+      console.log("txHash", txHash);
+      showSuccessMessage(
+        `Minted Nft ${txHash.transactionHash}`,
+        txHash.transactionHash
+      );
+      getNftCount();
+      setLoading(false);
+    } catch (err: any) {
+      console.error(err);
+      setLoading(false);
+      showErrorMessage(err.message || "Error in sending the transaction");
+    }
+  };
+
+  return (
+    <main className={classes.main}>
+      <p style={{ color: "#7E7E7E" }}>
+        Use Cases {"->"} Gasless {"->"} Mint Nft
+      </p>
+
+      <h3 className={classes.subTitle}>Mint Nft Flow</h3>
+
+      <p style={{ marginBottom: 20 }}>
+        This is an example gasless transaction to Mint Nft.
+      </p>
+      <p>
+        Nft Contract Address: {config.nft.address}{" "}
+        <span style={{ fontSize: 13, color: "#FFB4B4" }}>
+          (mumbai)
+        </span>
+      </p>
+      <p style={{ marginBottom: 30 }}>
+        Nft Balance in SCW:{" "}
+        {nftCount === null ? (
+          <p style={{ color: "#7E7E7E", display: "contents" }}>fetching...</p>
+        ) : (
+          nftCount
+        )}
+      </p>
+
+      <Button title="Mint NFT" isLoading={loading} onClickFunc={() => mintNft(false)} />
+
+      <br/> <br/>
+
+      <Button title="Mint to EOA" isLoading={loading} onClickFunc={() => mintNft(true)} />
+    </main>
+  );
+};
+
+const useStyles = makeStyles(() => ({
+  main: {
+    margin: "auto",
+    padding: "10px 40px",
+    color: "#7E7E7E",
+  },
+  subTitle: {
+    fontFamily: "Rubik",
+    color: "#BDC2FF",
+    fontSize: 28,
+  },
+  h3Title: {
+    color: "#fff",
+  },
+}));
+
+export default MintNft;
