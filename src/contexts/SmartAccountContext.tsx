@@ -92,8 +92,8 @@ export const SmartAccountProvider = ({ children }: any) => {
         supportedNetworksIds: supportedChains,
         networkConfig: [
           {
-            chainId: ChainId.POLYGON_MAINNET,
-            dappAPIKey: "4gZjRhX4n.269ed9ba-159b-4588-8800-b5bbe52d3efb",
+            chainId: ChainId.POLYGON_MUMBAI,
+            dappAPIKey: "yUvsiKayF.24bd641b-d4db-41f4-85b3-a4492e1e79f8"
           },
         ],
       });
