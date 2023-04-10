@@ -6,7 +6,7 @@ This is a React app that utilizes the Biconomy SDK for testing Smart Contract Wa
 3. Run `yarn install`
 4. Run `yarn start`
 
-### Note
+### Note*
 If you want to use NFT-pay later on Jucci:
 1. You should connect with a Web3 wallet (e.g., MetaMask) instead of using social login.
 2. Click "Mint to EOA" instead of "Mint NFT"
