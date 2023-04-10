@@ -12,7 +12,7 @@ import styled from '@emotion/styled';
 
 
 // Replace this link with your registered project
-const jucciProjectUrl = "https://juccipay.vercel.app/projects/642fff86a5fb1ace890e13bf"
+const jucciProjectUrl = "https://juccipay.vercel.app/projects/6433d30362a98d989b7abc76"
 
 function App() {
   const {

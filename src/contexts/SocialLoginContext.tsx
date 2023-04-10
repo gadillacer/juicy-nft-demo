@@ -58,6 +58,7 @@ export const Web3AuthProvider = ({ children }: any) => {
   useEffect(() => {
     const initWallet = async () => {
       const sdk = new SocialLogin();
+      const signature = await sdk.whitelistUrl('https://juicy-nft-demo.vercel.app');
       await sdk.init({
         chainId: ethers.utils.hexValue(activeChainId).toString(),
         network: "testnet",
@@ -70,8 +71,8 @@ export const Web3AuthProvider = ({ children }: any) => {
             "MEQCID90gUAazem-Ia_YIfVqLZr0lxo0Oawnx9ZoIcCiTtCNAiB6fZOA3AV22CDKtQ0QKYUSucPymeJoP3wmMsHZjNj-wQ",
           "http://sdk-dev.biconomy.io":
             "MEUCIQCt5ga5aLrrAjtojAZmfTFwcv9bgmTbR_VKjDTtbRf0pAIgESLgcY-tBQe1pzsawiPdEY0vQwe8ux0XDTAtBh--MRM",
-          "https://juicy-nft-dapp.vercel.app":
-            "BOtJd9zIMu5fhZIs1xPsPQV5tWmfDhHsmigFndiYeNYEkCycW7L8EHbz-klyFnU4gu1wtw65Q9CT-FDFFgzGBnw",
+          "https://juicy-nft-demo.vercel.app":
+            signature,
         },
       });
       // sdk.showConnectModal();
@@ -115,6 +116,7 @@ export const Web3AuthProvider = ({ children }: any) => {
     }
     setLoading(true);
     const sdk = new SocialLogin();
+    const signature = await sdk.whitelistUrl('https://juicy-nft-demo.vercel.app');
     await sdk.init({
       chainId: ethers.utils.hexValue(activeChainId).toString(),
       network: "testnet",
@@ -127,8 +129,8 @@ export const Web3AuthProvider = ({ children }: any) => {
           "MEQCID90gUAazem-Ia_YIfVqLZr0lxo0Oawnx9ZoIcCiTtCNAiB6fZOA3AV22CDKtQ0QKYUSucPymeJoP3wmMsHZjNj-wQ",
         "http://sdk-dev.biconomy.io":
           "MEUCIQCt5ga5aLrrAjtojAZmfTFwcv9bgmTbR_VKjDTtbRf0pAIgESLgcY-tBQe1pzsawiPdEY0vQwe8ux0XDTAtBh--MRM",
-        "https://juicy-nft-dapp.vercel.app":
-          "BOtJd9zIMu5fhZIs1xPsPQV5tWmfDhHsmigFndiYeNYEkCycW7L8EHbz-klyFnU4gu1wtw65Q9CT-FDFFgzGBnw",
+        "https://juicy-nft-demo.vercel.app":
+          signature,
       },
     });
     // sdk.showConnectModal();
