@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 
 import { Web3AuthProvider } from "./contexts/SocialLoginContext";
 import { SmartAccountProvider } from "./contexts/SmartAccountContext";
+import "@biconomy-sdk-dev/web3-auth/dist/src/style.css"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

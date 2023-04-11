@@ -56,17 +56,16 @@ function App() {
         {scwLoading && <h2>Loading Smart Account...</h2>}
 
         {selectedAccount && biconomyAddress && (
-          <div>
-            <h2>Smart Account Address</h2>
-            <p>{selectedAccount.smartAccountAddress}</p>
+            <div>
+              <h2>Smart Account Address</h2>
+              <p>{selectedAccount.smartAccountAddress}</p>
           </div>
         )}
 
-        <MintNft />
-
+        {selectedAccount && <MintNft />}
         <br />
 
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Fund this project gas at:{' '}
           <StyledLink href={jucciProjectUrl}>
             <Typography variant="h6" component="span">
